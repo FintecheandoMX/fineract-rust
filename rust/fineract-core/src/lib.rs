@@ -24,10 +24,13 @@
 //! Security: this crate is compiled with `#![forbid(unsafe_code)]`.
 
 #![forbid(unsafe_code)]
+#![allow(async_fn_in_trait)]
 
+pub mod domain;
 pub mod error;
 pub mod ids;
 pub mod money;
+pub mod repository;
 pub mod tenant;
 
 #[cfg(test)]

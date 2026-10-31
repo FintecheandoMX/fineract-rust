@@ -1,0 +1,33 @@
+[package]
+name = "fineract-branch"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust domain module: branch / office management."
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+async-trait = "0.1"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres"] }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+
+[dependencies.fineract-validation]
+path = "../fineract-validation"
+
+[dependencies.fineract-security]
+path = "../fineract-security"
+
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"
+
+[dependencies.fineract-command]
+path = "../fineract-command"
+
+[dev-dependencies]
+proptest = { workspace = true }
+tokio = { workspace = true }

@@ -184,6 +184,7 @@ define_id!(CommandId);
 define_id!(FundId);
 define_id!(DocumentId);
 define_id!(ReportId);
+define_id!(InvestorId);
 
 #[cfg(test)]
 mod tests {

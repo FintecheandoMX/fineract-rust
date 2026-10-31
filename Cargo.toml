@@ -25,6 +25,12 @@ members = [
     "rust/fineract-command",
     "rust/fineract-provider",
     "rust/fineract-tests",
+    "rust/fineract-branch",
+    "rust/fineract-charge",
+    "rust/fineract-rates",
+    "rust/fineract-tax",
+    "rust/fineract-document",
+    "rust/fineract-investor",
 ]
 
 [workspace.dependencies]

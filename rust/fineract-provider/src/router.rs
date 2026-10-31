@@ -18,6 +18,9 @@ use crate::handlers::auth::{healthz, login, logout, refresh_token};
 use crate::handlers::branch::{
     create_office, delete_office, get_office, list_offices, update_office,
 };
+use crate::handlers::charge::{
+    create_charge, delete_charge, get_charge, list_charges, update_charge,
+};
 use crate::handlers::client::{
     activate_client, create_client, create_group, delete_client, delete_group, get_client,
     get_group, list_clients, list_groups, update_client, update_group,
@@ -80,6 +83,12 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/groups/:id",
             get(get_group).put(update_group).delete(delete_group),
+        )
+        // Charges
+        .route("/v1/charges", get(list_charges).post(create_charge))
+        .route(
+            "/v1/charges/:id",
+            get(get_charge).put(update_charge).delete(delete_charge),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

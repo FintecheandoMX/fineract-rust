@@ -6,10 +6,14 @@ description = "Fineract Rust command pipeline (CQRS): command dispatch, handlers
 license = "Apache-2.0"
 
 [dependencies]
-serde = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 thiserror = "1"
 tokio = { workspace = true }
 tracing = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true, features = ["v4", "serde"] }
+async-trait = "0.1"
 
 [dependencies.fineract-core]
 path = "../fineract-core"
@@ -19,3 +23,7 @@ path = "../fineract-security"
 
 [dependencies.fineract-persistence]
 path = "../fineract-persistence"
+
+[dev-dependencies]
+proptest = { workspace = true }
+secrecy = { workspace = true }

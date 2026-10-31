@@ -1,22 +1,32 @@
-// Licensed to the Apache Software Foundation (ASF) under one
-// or more contributor license agreements. See the NOTICE file
-// distributed with this work for additional information
-// regarding copyright ownership. The ASF licenses this file
-// to you under the Apache License, Version 2.0 (the
-// "License"); you may not use this file except in compliance
-// with the License. You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied. See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
-//! Command pipeline (CQRS): dispatch, handlers, idempotency, maker-checker,
-//! audit. Phase 3 builds this on fineract-core + fineract-security +
-//! fineract-persistence.
+//! Command pipeline (CQRS) for Fineract.
+//!
+//! Phase 3 implements:
+//! - [`CommandRequest`] trait — typed command payloads (never raw JsonCommand)
+//! - [`Command`] — command wrapper with idempotency key and audit timestamps
+//! - [`CommandHandler`] trait — handles a specific command type with authZ
+//! - [`CommandDispatcher`] trait — sync + async dispatch to registered handlers
+//! - [`CommandHandlerManager`] — registry of command handlers
+//! - Idempotency support — duplicate command detection
+//! - Maker-checker support — pending/approved/rejected/executed lifecycle
+//! - Audit logging — every command execution is recorded
+//!
+//! Every command handler receives an explicit [`AuthorizedContext`] and must
+//! call [`AuthorizationService::check`] before mutating state. This makes
+//! authorization a compile-time requirement for all writes.
 
 #![forbid(unsafe_code)]
+#![allow(async_fn_in_trait)]
+
+mod audit;
+mod core;
+mod errors;
+mod idempotency;
+mod implementation;
+mod maker_checker;
+
+pub use audit::*;
+pub use core::*;
+pub use errors::*;
+pub use idempotency::*;
+pub use implementation::dispatcher::{AsyncCommandDispatcher, SynchronousCommandDispatcher};
+pub use maker_checker::*;

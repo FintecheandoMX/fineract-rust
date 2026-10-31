@@ -22,6 +22,14 @@ pub struct CreateOfficeRequest {
     pub active: bool,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct UpdateOfficeRequest {
+    pub name: String,
+    pub currency: String,
+    pub external_id: Option<String>,
+    pub active: bool,
+}
+
 #[derive(Debug, Serialize)]
 pub struct OfficeResponse {
     pub id: i64,
@@ -123,18 +131,78 @@ pub async fn create_office(
 
 /// PUT /v1/offices/:id — update an office.
 pub async fn update_office(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
-    Path(_id): Path<i64>,
-) -> Result<StatusCode, AppError> {
-    Err(AppError::NotFound)
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
+    Path(id): Path<i64>,
+    Json(payload): Json<UpdateOfficeRequest>,
+) -> Result<Json<OfficeResponse>, AppError> {
+    let ctx = &auth.0;
+    let currency = fineract_core::money::Currency::from_code(&payload.currency)
+        .map_err(|_| AppError::BadRequest("invalid currency code".to_string()))?;
+
+    let name = payload.name.clone();
+    let command = Command::new(
+        None,
+        ctx.tenant_id,
+        Some("api".to_string()),
+        fineract_branch::UpdateOfficeCommand {
+            id: OfficeId::new(id),
+            tenant_id: ctx.tenant_id,
+            name: name.clone(),
+            external_id: payload.external_id,
+            opening_date: None,
+            timezone: None,
+            country: None,
+            currency: currency.code().to_string(),
+            parent_office_id: None,
+            active: payload.active,
+        },
+    );
+
+    let result = state
+        .dispatcher
+        .dispatch(command, ctx)
+        .await
+        .map_err(|_| AppError::Internal)?;
+
+    match result.state {
+        fineract_command::CommandState::Executed => {
+            let office_id = result.response.ok_or(AppError::Internal)?;
+            Ok(Json(OfficeResponse {
+                id: office_id.value(),
+                name,
+                currency: payload.currency,
+            }))
+        }
+        _ => Err(AppError::Internal),
+    }
 }
 
 /// DELETE /v1/offices/:id — delete an office.
 pub async fn delete_office(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
-    Path(_id): Path<i64>,
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
+    Path(id): Path<i64>,
 ) -> Result<StatusCode, AppError> {
-    Err(AppError::NotFound)
+    let ctx = &auth.0;
+    let command = Command::new(
+        None,
+        ctx.tenant_id,
+        Some("api".to_string()),
+        fineract_branch::DeleteOfficeCommand {
+            id: OfficeId::new(id),
+            tenant_id: ctx.tenant_id,
+        },
+    );
+
+    let result = state
+        .dispatcher
+        .dispatch(command, ctx)
+        .await
+        .map_err(|_| AppError::Internal)?;
+
+    match result.state {
+        fineract_command::CommandState::Executed => Ok(StatusCode::NO_CONTENT),
+        _ => Err(AppError::Internal),
+    }
 }

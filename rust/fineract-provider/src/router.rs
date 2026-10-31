@@ -28,6 +28,7 @@ use crate::handlers::client::{
 use crate::handlers::loan::{
     create_loan, delete_loan, get_loan, list_loans, record_loan_transaction, update_loan,
 };
+use crate::handlers::rate::{create_rate, delete_rate, get_rate, list_rates, update_rate};
 use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
     list_savings_accounts, update_savings_account,
@@ -89,6 +90,12 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/charges/:id",
             get(get_charge).put(update_charge).delete(delete_charge),
+        )
+        // Rates
+        .route("/v1/rates", get(list_rates).post(create_rate))
+        .route(
+            "/v1/rates/:id",
+            get(get_rate).put(update_rate).delete(delete_rate),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

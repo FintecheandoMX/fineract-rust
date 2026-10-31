@@ -188,6 +188,9 @@ define_id!(InvestorId);
 // COB / batch.
 define_id!(JobId);
 define_id!(JobExecutionId);
+// Savings / accounting.
+define_id!(SavingsTransactionId);
+define_id!(AccountingPeriodId);
 
 #[cfg(test)]
 mod tests {

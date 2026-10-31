@@ -450,6 +450,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c66915cc5391097de7a2b0b972e8505aa33c0df401fd3a6811dbdb32881ba48"
 
 [[package]]
+name = "fineract-accounting"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-branch"
 version = "0.1.0"
 dependencies = [
@@ -620,6 +640,26 @@ dependencies = [
  "sqlx",
  "thiserror 1.0.69",
  "tokio",
+]
+
+[[package]]
+name = "fineract-savings"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]

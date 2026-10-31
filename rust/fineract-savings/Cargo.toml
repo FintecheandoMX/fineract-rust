@@ -1,0 +1,40 @@
+[package]
+name = "fineract-savings"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust domain module: savings accounts."
+license = "Apache-2.0"
+
+[lints.rust]
+unused_imports = "allow"
+dead_code = "allow"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+async-trait = "0.1"
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
+tracing = { workspace = true }
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "postgres"] }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+features = ["sqlx"]
+
+[dependencies.fineract-validation]
+path = "../fineract-validation"
+
+[dependencies.fineract-security]
+path = "../fineract-security"
+
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"
+
+[dependencies.fineract-command]
+path = "../fineract-command"
+
+[dev-dependencies]
+chrono = { workspace = true }
+proptest = { workspace = true }
+tokio = { workspace = true }

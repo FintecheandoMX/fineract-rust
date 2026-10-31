@@ -32,6 +32,8 @@ members = [
     "rust/fineract-document",
     "rust/fineract-investor",
     "rust/fineract-cob",
+    "rust/fineract-savings",
+    "rust/fineract-accounting",
 ]
 
 [workspace.dependencies]

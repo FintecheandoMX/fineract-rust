@@ -25,6 +25,9 @@ use crate::handlers::client::{
     activate_client, create_client, create_group, delete_client, delete_group, get_client,
     get_group, list_clients, list_groups, update_client, update_group,
 };
+use crate::handlers::document::{
+    create_document, delete_document, get_document, list_documents, update_document,
+};
 use crate::handlers::loan::{
     create_loan, delete_loan, get_loan, list_loans, record_loan_transaction, update_loan,
 };
@@ -103,6 +106,14 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/taxes/:id",
             get(get_tax).put(update_tax).delete(delete_tax),
+        )
+        // Documents
+        .route("/v1/documents", get(list_documents).post(create_document))
+        .route(
+            "/v1/documents/:id",
+            get(get_document)
+                .put(update_document)
+                .delete(delete_document),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

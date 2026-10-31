@@ -11,6 +11,7 @@ use fineract_branch::SqlxBranchRepository;
 use fineract_charge::SqlxChargeRepository;
 use fineract_client::SqlxClientRepository;
 use fineract_command::SynchronousCommandDispatcher;
+use fineract_document::SqlxDocumentRepository;
 use fineract_loan::SqlxLoanRepository;
 use fineract_persistence::TenantPoolManager;
 use fineract_rates::SqlxRateRepository;
@@ -35,6 +36,7 @@ pub struct AppState {
     pub charge_repository: Arc<SqlxChargeRepository>,
     pub rate_repository: Arc<SqlxRateRepository>,
     pub tax_repository: Arc<SqlxTaxRepository>,
+    pub document_repository: Arc<SqlxDocumentRepository>,
 }
 
 impl AppState {
@@ -53,6 +55,7 @@ impl AppState {
         let cs6 = connection_string.clone();
         let cs7 = connection_string.clone();
         let cs8 = connection_string.clone();
+        let cs9 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -61,6 +64,7 @@ impl AppState {
         let pm6 = pool_manager.clone();
         let pm7 = pool_manager.clone();
         let pm8 = pool_manager.clone();
+        let pm9 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -75,6 +79,7 @@ impl AppState {
             charge_repository: Arc::new(SqlxChargeRepository::new(pm6, cs6)),
             rate_repository: Arc::new(SqlxRateRepository::new(pm7, cs7)),
             tax_repository: Arc::new(SqlxTaxRepository::new(pm8, cs8)),
+            document_repository: Arc::new(SqlxDocumentRepository::new(pm9, cs9)),
         }
     }
 }

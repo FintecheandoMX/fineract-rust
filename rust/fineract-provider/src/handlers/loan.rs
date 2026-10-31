@@ -11,6 +11,8 @@ use crate::state::AppState;
 use fineract_command::Command;
 use fineract_command::CommandDispatcher;
 use fineract_command::CommandRequest;
+use fineract_core::ids::LoanId;
+use fineract_loan::LoanRepository;
 
 #[derive(Debug, Deserialize)]
 pub struct CreateLoanRequest {
@@ -33,19 +35,45 @@ pub struct LoanResponse {
 
 /// GET /v1/loans — list loans for the tenant.
 pub async fn list_loans(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
 ) -> Result<Json<Vec<LoanResponse>>, AppError> {
-    Err(AppError::NotFound)
+    let ctx = &auth.0;
+    let loans = state
+        .loan_repository
+        .find_all_by_tenant(ctx)
+        .await
+        .map_err(|_| AppError::Internal)?;
+    Ok(Json(
+        loans
+            .into_iter()
+            .map(|l| LoanResponse {
+                id: l.id.value(),
+                status: format!("{:?}", l.status),
+            })
+            .collect(),
+    ))
 }
 
 /// GET /v1/loans/:id — get a single loan.
 pub async fn get_loan(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
-    Path(_id): Path<i64>,
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
+    Path(id): Path<i64>,
 ) -> Result<Json<LoanResponse>, AppError> {
-    Err(AppError::NotFound)
+    let ctx = &auth.0;
+    let loan = state
+        .loan_repository
+        .find_by_id(ctx, LoanId::new(id))
+        .await
+        .map_err(|_| AppError::Internal)?;
+    match loan {
+        Some(l) => Ok(Json(LoanResponse {
+            id: l.id.value(),
+            status: format!("{:?}", l.status),
+        })),
+        None => Err(AppError::NotFound),
+    }
 }
 
 /// POST /v1/loans — create a loan via the command pipeline.
@@ -96,13 +124,22 @@ pub async fn create_loan(
         },
     );
 
-    let _result = state
+    let result = state
         .dispatcher
         .dispatch(command, ctx)
         .await
         .map_err(|_| AppError::Internal)?;
 
-    Err(AppError::Internal)
+    match result.state {
+        fineract_command::CommandState::Executed => {
+            let loan_id = result.response.ok_or(AppError::Internal)?;
+            Ok(Json(LoanResponse {
+                id: loan_id.value(),
+                status: "PendingApproval".to_string(),
+            }))
+        }
+        _ => Err(AppError::Internal),
+    }
 }
 
 /// PUT /v1/loans/:id — update a loan.

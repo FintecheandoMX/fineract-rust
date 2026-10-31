@@ -11,6 +11,8 @@ use crate::state::AppState;
 use fineract_command::Command;
 use fineract_command::CommandDispatcher;
 use fineract_command::CommandRequest;
+use fineract_core::ids::SavingsAccountId;
+use fineract_savings::SavingsAccountRepository;
 
 #[derive(Debug, Deserialize)]
 pub struct CreateSavingsAccountRequest {
@@ -29,19 +31,47 @@ pub struct SavingsAccountResponse {
 
 /// GET /v1/savings-accounts — list savings accounts for the tenant.
 pub async fn list_savings_accounts(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
 ) -> Result<Json<Vec<SavingsAccountResponse>>, AppError> {
-    Err(AppError::NotFound)
+    let ctx = &auth.0;
+    let accounts = state
+        .savings_repository
+        .find_all_by_tenant(ctx)
+        .await
+        .map_err(|_| AppError::Internal)?;
+    Ok(Json(
+        accounts
+            .into_iter()
+            .map(|a| SavingsAccountResponse {
+                id: a.id.value(),
+                account_no: a.account_no,
+                status: format!("{:?}", a.status),
+            })
+            .collect(),
+    ))
 }
 
 /// GET /v1/savings-accounts/:id — get a single savings account.
 pub async fn get_savings_account(
-    Extension(_auth): Extension<AuthContext>,
-    _state: State<AppState>,
-    Path(_id): Path<i64>,
+    Extension(auth): Extension<AuthContext>,
+    state: State<AppState>,
+    Path(id): Path<i64>,
 ) -> Result<Json<SavingsAccountResponse>, AppError> {
-    Err(AppError::NotFound)
+    let ctx = &auth.0;
+    let account = state
+        .savings_repository
+        .find_by_id(ctx, SavingsAccountId::new(id))
+        .await
+        .map_err(|_| AppError::Internal)?;
+    match account {
+        Some(a) => Ok(Json(SavingsAccountResponse {
+            id: a.id.value(),
+            account_no: a.account_no,
+            status: format!("{:?}", a.status),
+        })),
+        None => Err(AppError::NotFound),
+    }
 }
 
 /// POST /v1/savings-accounts — create a savings account via the command pipeline.
@@ -60,26 +90,37 @@ pub async fn create_savings_account(
     let currency = fineract_core::money::Currency::from_code(&payload.currency)
         .map_err(|_| AppError::BadRequest("invalid currency code".to_string()))?;
 
+    let account_no = payload.account_no.clone();
     let command = Command::new(
         None,
         ctx.tenant_id,
         Some("api".to_string()),
         fineract_savings::CreateSavingsAccountCommand {
             tenant_id: ctx.tenant_id,
-            account_no: payload.account_no,
+            account_no: account_no.clone(),
             account_type: format!("{:?}", account_type),
             currency: currency.code().to_string(),
             active: payload.active,
         },
     );
 
-    let _result = state
+    let result = state
         .dispatcher
         .dispatch(command, ctx)
         .await
         .map_err(|_| AppError::Internal)?;
 
-    Err(AppError::Internal)
+    match result.state {
+        fineract_command::CommandState::Executed => {
+            let account_id = result.response.ok_or(AppError::Internal)?;
+            Ok(Json(SavingsAccountResponse {
+                id: account_id.value(),
+                account_no,
+                status: "PendingApproval".to_string(),
+            }))
+        }
+        _ => Err(AppError::Internal),
+    }
 }
 
 /// PUT /v1/savings-accounts/:id — update a savings account.

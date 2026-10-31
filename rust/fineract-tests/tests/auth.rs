@@ -3,7 +3,7 @@
 use fineract_tests::TestApp;
 
 #[tokio::test]
-async fn login_without_tenant_header_returns_401() {
+async fn login_without_tenant_header_returns_400() {
     let app = TestApp::new().await.expect("test app to start");
     let url = format!("{}/auth/login", app.base_url());
 
@@ -18,10 +18,8 @@ async fn login_without_tenant_header_returns_401() {
         .await
         .expect("request to succeed");
 
-    // /auth/login has no auth middleware (it is the entry point), so the
-    // missing tenant header is not rejected here. With no users registered
-    // in the in-memory store, authentication fails with 401.
-    assert_eq!(resp.status(), 401);
+    // /auth/login now requires Fineract-Platform-TenantId header
+    assert_eq!(resp.status(), 400);
 }
 
 #[tokio::test]

@@ -1,0 +1,19 @@
+[package]
+name = "fineract-security"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust authentication, authorization and multi-tenancy security layer."
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = "1"
+secrecy = { workspace = true }
+zeroize = { workspace = true }
+subtle = { workspace = true }
+rand = { workspace = true }
+jsonwebtoken = { workspace = true }
+argon2 = { workspace = true }
+
+[dependencies.fineract-core]
+path = "../fineract-core"

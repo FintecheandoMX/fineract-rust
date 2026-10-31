@@ -1,0 +1,15 @@
+[package]
+name = "fineract-tests"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust integration and end-to-end tests."
+license = "Apache-2.0"
+
+[dependencies]
+tokio = { workspace = true, features = ["macros"] }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+
+[dev-dependencies]
+sqlx = { workspace = true }

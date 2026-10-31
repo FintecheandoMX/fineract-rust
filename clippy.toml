@@ -1,0 +1,2 @@
+# Clippy configuration for the Fineract Rust migration.
+# Treat all lints as warnings-by-default that are escalated to errors via CI (-D warnings).

@@ -1,0 +1,105 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements. See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership. The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+name: Rust CI
+
+on:
+  push:
+    branches: [develop, rust-migration, "phase-*"]
+  pull_request:
+    branches: [develop, rust-migration, "phase-*"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  lint-and-audit:
+    name: clippy + audit + deny
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Verify formatting
+        run: cargo fmt --all -- --check
+
+      - name: Clippy (deny warnings)
+        run: cargo clippy --workspace --all-features -- -D warnings
+
+      - name: Supply-chain audit (cargo-audit)
+        run: |
+          cargo audit \
+            --ignore RUSTSEC-2023-0071
+        # NOTE: RUSTSEC-2023-0071 (rsa "Marvin Attack") is a lockfile-only
+        # entry reachable solely through the unused sqlx-mysql backend. This
+        # project is PostgreSQL-only; rsa is never compiled or linked
+        # (verified with `cargo tree -i rsa` -> no dependents). The advisory
+        # has no fix available. It is documented in SECURITY-THREAT-MODEL.md.
+
+      - name: License + vulnerability deny (cargo-deny)
+        run: cargo deny check
+
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+    needs: lint-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Compile workspace (all features)
+        run: cargo check --workspace --all-features
+
+      - name: Run unit + integration tests
+        run: cargo test --workspace --all-features

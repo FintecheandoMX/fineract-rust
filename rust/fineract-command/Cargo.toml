@@ -1,0 +1,21 @@
+[package]
+name = "fineract-command"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust command pipeline (CQRS): command dispatch, handlers, idempotency, audit."
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true }
+thiserror = "1"
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+
+[dependencies.fineract-security]
+path = "../fineract-security"
+
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"

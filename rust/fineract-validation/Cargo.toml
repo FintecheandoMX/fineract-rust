@@ -1,0 +1,17 @@
+[package]
+name = "fineract-validation"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust validation framework — hand-written validators (no proc-macro crates)."
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+thiserror = "1"
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+
+[dev-dependencies]
+proptest = { workspace = true }
+rust_decimal = { workspace = true, features = ["serde"] }

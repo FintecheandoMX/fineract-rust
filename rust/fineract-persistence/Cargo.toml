@@ -1,0 +1,19 @@
+[package]
+name = "fineract-persistence"
+version = "0.1.0"
+edition = "2021"
+description = "Fineract Rust persistence layer: sqlx tenant-aware pools and repositories."
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true }
+sqlx = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+features = ["sqlx"]
+
+[dependencies.fineract-security]
+path = "../fineract-security"

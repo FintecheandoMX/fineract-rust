@@ -35,3 +35,9 @@ gradleExp/
 .java-version
 
 .windsurf/
+
+# --- Rust (Fineract migration) ---
+target/
+.sqlx/
+*.rs.bak
+# Cargo.lock is intentionally committed for reproducible builds and supply-chain audits.

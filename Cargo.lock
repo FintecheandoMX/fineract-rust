@@ -483,14 +483,19 @@ dependencies = [
 
 [[package]]
 name = "fineract-persistence"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
+ "async-trait",
+ "chrono",
  "fineract-core",
  "fineract-security",
+ "proptest",
  "serde",
  "sqlx",
+ "thiserror 1.0.69",
  "tokio",
  "tracing",
+ "uuid",
 ]
 
 [[package]]

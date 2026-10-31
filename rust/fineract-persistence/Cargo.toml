@@ -1,15 +1,19 @@
 [package]
 name = "fineract-persistence"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Fineract Rust persistence layer: sqlx tenant-aware pools and repositories."
 license = "Apache-2.0"
 
 [dependencies]
-serde = { workspace = true }
-sqlx = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+sqlx = { workspace = true, features = ["migrate"] }
 tokio = { workspace = true }
 tracing = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+async-trait = "0.1"
+thiserror = "1"
 
 [dependencies.fineract-core]
 path = "../fineract-core"
@@ -17,3 +21,7 @@ features = ["sqlx"]
 
 [dependencies.fineract-security]
 path = "../fineract-security"
+
+[dev-dependencies]
+proptest = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "time"] }

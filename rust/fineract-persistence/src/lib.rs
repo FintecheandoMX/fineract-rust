@@ -19,3 +19,18 @@
 //! Unit-of-Work. Phase 4 builds this on top of fineract-core + fineract-security.
 
 #![forbid(unsafe_code)]
+#![allow(async_fn_in_trait)]
+
+mod error;
+mod migration;
+mod models;
+mod pool;
+mod repository;
+mod unit_of_work;
+
+pub use error::*;
+pub use migration::*;
+pub use models::*;
+pub use pool::*;
+pub use repository::*;
+pub use unit_of_work::*;

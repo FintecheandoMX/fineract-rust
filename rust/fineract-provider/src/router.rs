@@ -33,6 +33,7 @@ use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
     list_savings_accounts, update_savings_account,
 };
+use crate::handlers::tax::{create_tax, delete_tax, get_tax, list_taxes, update_tax};
 use crate::state::AppState;
 
 /// Build the Axum `Router` with all API routes.
@@ -96,6 +97,12 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/rates/:id",
             get(get_rate).put(update_rate).delete(delete_rate),
+        )
+        // Taxes
+        .route("/v1/taxes", get(list_taxes).post(create_tax))
+        .route(
+            "/v1/taxes/:id",
+            get(get_tax).put(update_tax).delete(delete_tax),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

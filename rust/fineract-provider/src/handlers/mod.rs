@@ -8,3 +8,4 @@ pub mod client;
 pub mod loan;
 pub mod rate;
 pub mod savings;
+pub mod tax;

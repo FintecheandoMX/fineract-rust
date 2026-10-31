@@ -17,6 +17,7 @@ use fineract_rates::SqlxRateRepository;
 use fineract_savings::SqlxSavingsAccountRepository;
 use fineract_security::AuthenticationService;
 use fineract_security::AuthorizationService;
+use fineract_tax::SqlxTaxRepository;
 
 /// Shared state injected into every Axum handler via `State(AppState)`.
 #[derive(Clone)]
@@ -33,6 +34,7 @@ pub struct AppState {
     pub client_repository: Arc<SqlxClientRepository>,
     pub charge_repository: Arc<SqlxChargeRepository>,
     pub rate_repository: Arc<SqlxRateRepository>,
+    pub tax_repository: Arc<SqlxTaxRepository>,
 }
 
 impl AppState {
@@ -50,6 +52,7 @@ impl AppState {
         let cs5 = connection_string.clone();
         let cs6 = connection_string.clone();
         let cs7 = connection_string.clone();
+        let cs8 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -57,6 +60,7 @@ impl AppState {
         let pm5 = pool_manager.clone();
         let pm6 = pool_manager.clone();
         let pm7 = pool_manager.clone();
+        let pm8 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -70,6 +74,7 @@ impl AppState {
             client_repository: Arc::new(SqlxClientRepository::new(pm5, cs5)),
             charge_repository: Arc::new(SqlxChargeRepository::new(pm6, cs6)),
             rate_repository: Arc::new(SqlxRateRepository::new(pm7, cs7)),
+            tax_repository: Arc::new(SqlxTaxRepository::new(pm8, cs8)),
         }
     }
 }

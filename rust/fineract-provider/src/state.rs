@@ -6,6 +6,7 @@
 
 use std::sync::Arc;
 
+use fineract_accounting::SqlxAccountRepository;
 use fineract_branch::SqlxBranchRepository;
 use fineract_command::SynchronousCommandDispatcher;
 use fineract_loan::SqlxLoanRepository;
@@ -25,6 +26,7 @@ pub struct AppState {
     pub office_repository: Arc<SqlxBranchRepository>,
     pub loan_repository: Arc<SqlxLoanRepository>,
     pub savings_repository: Arc<SqlxSavingsAccountRepository>,
+    pub account_repository: Arc<SqlxAccountRepository>,
 }
 
 impl AppState {
@@ -38,15 +40,21 @@ impl AppState {
         let cs1 = connection_string.clone();
         let cs2 = connection_string.clone();
         let cs3 = connection_string.clone();
+        let cs4 = connection_string.clone();
+        let pm1 = pool_manager.clone();
+        let pm2 = pool_manager.clone();
+        let pm3 = pool_manager.clone();
+        let pm4 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
             authz_service,
             pool_manager: pool_manager.clone(),
             connection_string,
-            office_repository: Arc::new(SqlxBranchRepository::new(pool_manager.clone(), cs1)),
-            loan_repository: Arc::new(SqlxLoanRepository::new(pool_manager.clone(), cs2)),
-            savings_repository: Arc::new(SqlxSavingsAccountRepository::new(pool_manager, cs3)),
+            office_repository: Arc::new(SqlxBranchRepository::new(pm1, cs1)),
+            loan_repository: Arc::new(SqlxLoanRepository::new(pm2, cs2)),
+            savings_repository: Arc::new(SqlxSavingsAccountRepository::new(pm3, cs3)),
+            account_repository: Arc::new(SqlxAccountRepository::new(pm4, cs4)),
         }
     }
 }

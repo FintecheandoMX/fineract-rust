@@ -1,5 +1,6 @@
 //! HTTP request handlers.
 
+pub mod account;
 pub mod auth;
 pub mod branch;
 pub mod loan;

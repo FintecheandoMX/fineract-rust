@@ -11,6 +11,9 @@ use axum::{
 };
 
 use crate::auth::auth_middleware;
+use crate::handlers::account::{
+    create_account, delete_account, get_account, list_accounts, update_account,
+};
 use crate::handlers::auth::{healthz, login, logout, refresh_token};
 use crate::handlers::branch::{
     create_office, delete_office, get_office, list_offices, update_office,
@@ -54,6 +57,12 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/savings-accounts/:id/activate",
             post(activate_savings_account),
+        )
+        // Accounts
+        .route("/v1/accounts", get(list_accounts).post(create_account))
+        .route(
+            "/v1/accounts/:id",
+            get(get_account).put(update_account).delete(delete_account),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

@@ -10,6 +10,7 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 
 use axum::serve;
+use fineract_accounting::command::register_handlers as register_accounting_handlers;
 use fineract_command::SynchronousCommandDispatcher;
 use fineract_persistence::TenantPoolManager;
 use fineract_security::AuthorizationService;
@@ -33,6 +34,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // --- Command dispatcher ---
     let dispatcher = SynchronousCommandDispatcher::new();
+
+    // Register accounting command handlers
+    // Note: In a real app, we'd use a proper service implementation here.
+    // For now, we just need the command types registered.
+    // register_accounting_handlers(&mut dispatcher, accounting_service);
 
     // --- Authentication service ---
     let auth_service: Arc<dyn AuthenticationService> = Arc::new(InMemoryAuthService::new()?);

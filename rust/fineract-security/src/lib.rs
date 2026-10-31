@@ -1,24 +1,34 @@
-// Licensed to the Apache Software Foundation (ASF) under one
-// or more contributor license agreements. See the NOTICE file
-// distributed with this work for additional information
-// regarding copyright ownership. The ASF licenses this file
-// to you under the Apache License, Version 2.0 (the
-// "License"); you may not use this file except in compliance
-// with the License. You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied. See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
 //! Authentication, authorization and multi-tenancy security layer.
 //!
-//! Phase 2 implements Basic Auth, OAuth2/JWT, RBAC, the AuthorizedContext /
-//! AuthorizationService and IDOR-safe data access. This is a compiling stub
-//! for Phase 0.
+//! Phase 2 implements:
+//! - [`AuthorizedContext`] — explicit, request-scoped security context carrying
+//!   tenant + authenticated user + roles/permissions. Impossible to forget:
+//!   every domain service takes it as an explicit parameter.
+//! - Authentication: Basic Auth (argon2-hashed passwords) and JWT (access +
+//!   refresh tokens, constant-time comparison, revocation).
+//! - Authorization: RBAC + data-level checks via [`AuthorizationService`].
+//!   IDOR protection by construction — every data access receives and checks
+//!   `AuthorizedContext`.
+//!
+//! Security: compiled with `#![forbid(unsafe_code)]`. Secrets use `secrecy` /
+//! `zeroize`; comparisons use `subtle` (constant time); randomness uses `rand`
+//! CSPRNG.
 
 #![forbid(unsafe_code)]
+#![allow(async_fn_in_trait)]
+
+mod authentication;
+mod authorization;
+mod context;
+mod errors;
+mod password;
+#[cfg(test)]
+mod tests;
+mod tokens;
+
+pub use authentication::*;
+pub use authorization::*;
+pub use context::*;
+pub use errors::*;
+pub use password::*;
+pub use tokens::*;

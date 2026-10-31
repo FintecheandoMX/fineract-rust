@@ -50,8 +50,8 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # --- Secrets & cryptography ---
-secrecy = "0.8"
-zeroize = "1"
+secrecy = { version = "0.8" }
+zeroize = { version = "1", features = ["derive"] }
 subtle = "2"
 rand = { version = "0.8", features = ["getrandom"] }
 ring = "0.17"

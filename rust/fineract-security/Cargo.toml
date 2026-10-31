@@ -6,14 +6,24 @@ description = "Fineract Rust authentication, authorization and multi-tenancy sec
 license = "Apache-2.0"
 
 [dependencies]
-serde = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 thiserror = "1"
 secrecy = { workspace = true }
-zeroize = { workspace = true }
+zeroize = { workspace = true, features = ["derive"] }
 subtle = { workspace = true }
 rand = { workspace = true }
 jsonwebtoken = { workspace = true }
 argon2 = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+async-trait = "0.1"
 
 [dependencies.fineract-core]
 path = "../fineract-core"
+
+[dependencies.fineract-validation]
+path = "../fineract-validation"
+
+[dev-dependencies]
+proptest = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "time"] }

@@ -7,9 +7,38 @@ license = "Apache-2.0"
 
 [dependencies]
 tokio = { workspace = true, features = ["macros"] }
+axum = { workspace = true }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+http = { workspace = true }
 
 [dependencies.fineract-core]
 path = "../fineract-core"
+
+[dependencies.fineract-security]
+path = "../fineract-security"
+
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"
+
+[dependencies.fineract-command]
+path = "../fineract-command"
+
+[dependencies.fineract-provider]
+path = "../fineract-provider"
+
+[dependencies.fineract-savings]
+path = "../fineract-savings"
+
+[dependencies.fineract-accounting]
+path = "../fineract-accounting"
+
+[dependencies.fineract-loan]
+path = "../fineract-loan"
+
+[dependencies.fineract-branch]
+path = "../fineract-branch"
 
 [dev-dependencies]
 sqlx = { workspace = true }

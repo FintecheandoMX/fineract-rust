@@ -10,13 +10,17 @@ use axum::{
     Router,
 };
 
-use crate::auth::auth_middleware;
+use crate::auth::{auth_middleware, AuthContext};
 use crate::handlers::account::{
     create_account, delete_account, get_account, list_accounts, update_account,
 };
 use crate::handlers::auth::{healthz, login, logout, refresh_token};
 use crate::handlers::branch::{
     create_office, delete_office, get_office, list_offices, update_office,
+};
+use crate::handlers::client::{
+    activate_client, create_client, create_group, delete_client, delete_group, get_client,
+    get_group, list_clients, list_groups, update_client, update_group,
 };
 use crate::handlers::loan::{
     create_loan, delete_loan, get_loan, list_loans, record_loan_transaction, update_loan,
@@ -63,6 +67,19 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/accounts/:id",
             get(get_account).put(update_account).delete(delete_account),
+        )
+        // Clients
+        .route("/v1/clients", get(list_clients).post(create_client))
+        .route(
+            "/v1/clients/:id",
+            get(get_client).put(update_client).delete(delete_client),
+        )
+        .route("/v1/clients/:id/activate", post(activate_client))
+        // Groups
+        .route("/v1/groups", get(list_groups).post(create_group))
+        .route(
+            "/v1/groups/:id",
+            get(get_group).put(update_group).delete(delete_group),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

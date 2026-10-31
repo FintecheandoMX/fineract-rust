@@ -56,6 +56,9 @@ path = "../fineract-savings"
 [dependencies.fineract-accounting]
 path = "../fineract-accounting"
 
+[dependencies.fineract-client]
+path = "../fineract-client"
+
 [dependencies.fineract-loan]
 path = "../fineract-loan"
 

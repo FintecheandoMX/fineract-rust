@@ -35,6 +35,12 @@ impl Permission {
     pub fn view_client() -> Permission {
         Permission(PermissionId::new(2002))
     }
+    pub fn update_client() -> Permission {
+        Permission(PermissionId::new(2003))
+    }
+    pub fn delete_client() -> Permission {
+        Permission(PermissionId::new(2004))
+    }
     pub fn create_savings_account() -> Permission {
         Permission(PermissionId::new(3001))
     }

@@ -523,6 +523,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-client"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-cob"
 version = "0.1.0"
 dependencies = [
@@ -698,6 +718,7 @@ dependencies = [
  "fineract-accounting",
  "fineract-branch",
  "fineract-charge",
+ "fineract-client",
  "fineract-cob",
  "fineract-command",
  "fineract-core",

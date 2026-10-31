@@ -38,6 +38,7 @@ members = [
     "rust/fineract-progressive-loan",
     "rust/fineract-working-capital-loan",
     "rust/fineract-loan-origination",
+    "rust/fineract-client",
 ]
 
 [workspace.dependencies]

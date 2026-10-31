@@ -191,6 +191,9 @@ define_id!(JobExecutionId);
 // Savings / accounting.
 define_id!(SavingsTransactionId);
 define_id!(AccountingPeriodId);
+// Loan family.
+define_id!(LoanTransactionId);
+define_id!(LoanScheduleId);
 
 #[cfg(test)]
 mod tests {

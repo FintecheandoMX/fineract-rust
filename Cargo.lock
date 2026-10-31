@@ -595,6 +595,47 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-loan"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "fineract-loan-origination"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-loan",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-persistence"
 version = "0.2.0"
 dependencies = [
@@ -609,6 +650,27 @@ dependencies = [
  "tokio",
  "tracing",
  "uuid",
+]
+
+[[package]]
+name = "fineract-progressive-loan"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-loan",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -720,6 +782,27 @@ dependencies = [
  "rust_decimal",
  "serde",
  "thiserror 1.0.69",
+]
+
+[[package]]
+name = "fineract-working-capital-loan"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-loan",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "proptest",
+ "rust_decimal",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]

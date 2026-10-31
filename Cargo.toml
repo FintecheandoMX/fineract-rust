@@ -34,6 +34,10 @@ members = [
     "rust/fineract-cob",
     "rust/fineract-savings",
     "rust/fineract-accounting",
+    "rust/fineract-loan",
+    "rust/fineract-progressive-loan",
+    "rust/fineract-working-capital-loan",
+    "rust/fineract-loan-origination",
 ]
 
 [workspace.dependencies]

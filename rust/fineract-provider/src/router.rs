@@ -34,6 +34,11 @@ use crate::handlers::investor::{
 use crate::handlers::loan::{
     create_loan, delete_loan, get_loan, list_loans, record_loan_transaction, update_loan,
 };
+use crate::handlers::loan_origination::{
+    approve_loan_application, delete_loan_application, get_loan_application,
+    list_loan_applications, list_loan_applications_by_client, reject_loan_application,
+    submit_loan_application, update_loan_application,
+};
 use crate::handlers::rate::{create_rate, delete_rate, get_rate, list_rates, update_rate};
 use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
@@ -125,6 +130,29 @@ pub fn router(state: AppState) -> Router {
             get(get_investor)
                 .put(update_investor)
                 .delete(delete_investor),
+        )
+        // Loan Origination
+        .route(
+            "/v1/loan-applications",
+            get(list_loan_applications).post(submit_loan_application),
+        )
+        .route(
+            "/v1/loan-applications/:id",
+            get(get_loan_application)
+                .put(update_loan_application)
+                .delete(delete_loan_application),
+        )
+        .route(
+            "/v1/clients/:client_id/loan-applications",
+            get(list_loan_applications_by_client),
+        )
+        .route(
+            "/v1/loan-applications/:id/approve",
+            post(approve_loan_application),
+        )
+        .route(
+            "/v1/loan-applications/:id/reject",
+            post(reject_loan_application),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

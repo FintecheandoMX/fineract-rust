@@ -185,6 +185,9 @@ define_id!(FundId);
 define_id!(DocumentId);
 define_id!(ReportId);
 define_id!(InvestorId);
+// COB / batch.
+define_id!(JobId);
+define_id!(JobExecutionId);
 
 #[cfg(test)]
 mod tests {

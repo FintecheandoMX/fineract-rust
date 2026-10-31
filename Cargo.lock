@@ -488,6 +488,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-cob"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "proptest",
+ "serde",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
 name = "fineract-command"
 version = "0.1.0"
 dependencies = [

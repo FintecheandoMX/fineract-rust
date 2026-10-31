@@ -11,7 +11,7 @@ use axum::{
 };
 
 use crate::auth::auth_middleware;
-use crate::handlers::auth::{login, logout, refresh_token};
+use crate::handlers::auth::{healthz, login, logout, refresh_token};
 use crate::handlers::branch::{
     create_office, delete_office, get_office, list_offices, update_office,
 };
@@ -62,6 +62,8 @@ pub fn router(state: AppState) -> Router {
         ));
 
     Router::new()
+        // Health (no auth required)
+        .route("/healthz", get(healthz))
         // Authentication (no auth middleware — these issue tokens)
         .route("/auth/login", post(login))
         .route("/auth/refresh", post(refresh_token))

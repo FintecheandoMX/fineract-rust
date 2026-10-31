@@ -1,0 +1,65 @@
+# Docker Compose for Fineract Rust migration — test environment.
+#
+# Spins up a dockerized PostgreSQL database and the Axum REST API provider.
+#
+# Usage:
+#   cp .env.example .env
+#   # edit .env as needed, then:
+#   docker compose up --build
+#
+# The provider listens on http://localhost:8080.
+# PostgreSQL listens on localhost:5432, database `fineract_desarrollo`.
+
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------
+  # PostgreSQL database (dockerized, per openMF/mifosx-platform pattern)
+  # ---------------------------------------------------------------
+  postgres:
+    image: postgres:18
+    container_name: fineract-rust-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${FINERACT_DB_PASSWORD:-postgres}
+      POSTGRES_DB: fineract_desarrollo
+    volumes:
+      - fineract_rust_postgres_data:/var/lib/postgresql
+      - ./docker/init/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "${FINERACT_DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fineract_desarrollo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # ---------------------------------------------------------------
+  # Axum REST API provider (Rust)
+  # ---------------------------------------------------------------
+  provider:
+    build:
+      context: ..
+      dockerfile: rust/Dockerfile
+    container_name: fineract-rust-provider
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      FINERACT_DATABASE_URL: ${FINERACT_DATABASE_URL:-postgresql://postgres:${FINERACT_DB_PASSWORD:-postgres}@postgres:5432/fineract_desarrollo}
+      FINERACT_PLATFORM_TENANT_IDENTIFIER: ${FINERACT_PLATFORM_TENANT_IDENTIFIER:-desarrollo}
+      RUST_LOG: ${RUST_LOG:-fineract_provider=debug,tower_http=debug}
+    ports:
+      - "${FINERACT_PROVIDER_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  fineract_rust_postgres_data:

@@ -80,3 +80,8 @@ pub async fn logout(
 ) -> Result<axum::Json<LogoutResponse>, AppError> {
     Err(AppError::Internal)
 }
+
+/// GET /healthz — liveness/readiness probe (no auth required).
+pub async fn healthz() -> &'static str {
+    "ok"
+}

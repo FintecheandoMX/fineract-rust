@@ -10,9 +10,70 @@ axum = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }
 tower-http = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+http = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
+secrecy = { workspace = true }
+async-trait = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+features = ["sqlx"]
+
+[dependencies.fineract-security]
+path = "../fineract-security"
 
 [dependencies.fineract-command]
 path = "../fineract-command"
 
-[dependencies.fineract-security]
-path = "../fineract-security"
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"
+
+[dependencies.fineract-branch]
+path = "../fineract-branch"
+
+[dependencies.fineract-charge]
+path = "../fineract-charge"
+
+[dependencies.fineract-rates]
+path = "../fineract-rates"
+
+[dependencies.fineract-tax]
+path = "../fineract-tax"
+
+[dependencies.fineract-document]
+path = "../fineract-document"
+
+[dependencies.fineract-investor]
+path = "../fineract-investor"
+
+[dependencies.fineract-savings]
+path = "../fineract-savings"
+
+[dependencies.fineract-accounting]
+path = "../fineract-accounting"
+
+[dependencies.fineract-loan]
+path = "../fineract-loan"
+
+[dependencies.fineract-progressive-loan]
+path = "../fineract-progressive-loan"
+
+[dependencies.fineract-working-capital-loan]
+path = "../fineract-working-capital-loan"
+
+[dependencies.fineract-loan-origination]
+path = "../fineract-loan-origination"
+
+[dependencies.fineract-cob]
+path = "../fineract-cob"
+
+[lints.rust]
+unused_imports = "allow"
+dead_code = "allow"
+
+[dev-dependencies]
+tokio = { workspace = true }

@@ -83,6 +83,9 @@ path = "../fineract-holiday"
 [dependencies.fineract-code]
 path = "../fineract-code"
 
+[dependencies.fineract-currency]
+path = "../fineract-currency"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

@@ -12,6 +12,7 @@ use fineract_charge::SqlxChargeRepository;
 use fineract_client::SqlxClientRepository;
 use fineract_code::SqlxCodeRepository;
 use fineract_command::SynchronousCommandDispatcher;
+use fineract_currency::SqlxCurrencyRepository;
 use fineract_document::SqlxDocumentRepository;
 use fineract_holiday::SqlxHolidayRepository;
 use fineract_investor::SqlxInvestorRepository;
@@ -51,6 +52,7 @@ pub struct AppState {
     pub staff_repository: Arc<SqlxStaffRepository>,
     pub holiday_repository: Arc<SqlxHolidayRepository>,
     pub code_repository: Arc<SqlxCodeRepository>,
+    pub currency_repository: Arc<SqlxCurrencyRepository>,
 }
 
 impl AppState {
@@ -77,6 +79,7 @@ impl AppState {
         let cs14 = connection_string.clone();
         let cs15 = connection_string.clone();
         let cs16 = connection_string.clone();
+        let cs17 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -93,6 +96,7 @@ impl AppState {
         let pm14 = pool_manager.clone();
         let pm15 = pool_manager.clone();
         let pm16 = pool_manager.clone();
+        let pm17 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -117,6 +121,7 @@ impl AppState {
             staff_repository: Arc::new(SqlxStaffRepository::new(pm14, cs14)),
             holiday_repository: Arc::new(SqlxHolidayRepository::new(pm15, cs15)),
             code_repository: Arc::new(SqlxCodeRepository::new(pm16, cs16)),
+            currency_repository: Arc::new(SqlxCurrencyRepository::new(pm17, cs17)),
         }
     }
 }

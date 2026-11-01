@@ -630,6 +630,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-currency"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "axum",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "http",
+ "rust_decimal",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-document"
 version = "0.1.0"
 dependencies = [
@@ -782,6 +805,7 @@ dependencies = [
  "fineract-code",
  "fineract-command",
  "fineract-core",
+ "fineract-currency",
  "fineract-document",
  "fineract-holiday",
  "fineract-investor",

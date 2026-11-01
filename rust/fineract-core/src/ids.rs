@@ -199,6 +199,8 @@ define_id!(HolidayId);
 // Code / CodeValue (lookup tables).
 define_id!(CodeId);
 define_id!(CodeValueId);
+// Currency.
+define_id!(CurrencyId);
 
 #[cfg(test)]
 mod tests {

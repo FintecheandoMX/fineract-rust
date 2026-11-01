@@ -29,6 +29,10 @@ use crate::handlers::code::{
     create_code, create_code_value, delete_code, delete_code_value, get_code, get_code_value,
     list_code_values, list_codes, update_code, update_code_value,
 };
+use crate::handlers::currency::{
+    create_currency, delete_currency, get_currency, get_currency_by_code, list_currencies,
+    update_currency,
+};
 use crate::handlers::document::{
     create_document, delete_document, get_document, list_documents, update_document,
 };
@@ -238,6 +242,15 @@ pub fn router(state: AppState) -> Router {
                 .put(update_code_value)
                 .delete(delete_code_value),
         )
+        // Currencies
+        .route("/v1/currencies", get(list_currencies).post(create_currency))
+        .route(
+            "/v1/currencies/:id",
+            get(get_currency)
+                .put(update_currency)
+                .delete(delete_currency),
+        )
+        .route("/v1/currencies/code/:code", get(get_currency_by_code))
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))
         .route(

@@ -89,6 +89,9 @@ path = "../fineract-currency"
 [dependencies.fineract-loan-product]
 path = "../fineract-loan-product"
 
+[dependencies.fineract-savings-product]
+path = "../fineract-savings-product"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

@@ -16,6 +16,7 @@ pub mod loan_product;
 pub mod progressive_loan;
 pub mod rate;
 pub mod savings;
+pub mod savings_product;
 pub mod staff;
 pub mod tax;
 pub mod working_capital_loan;

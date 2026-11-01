@@ -64,6 +64,10 @@ use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
     list_savings_accounts, update_savings_account,
 };
+use crate::handlers::savings_product::{
+    create_savings_product, delete_savings_product, get_savings_product,
+    get_savings_product_by_name, list_savings_products, update_savings_product,
+};
 use crate::handlers::staff::{
     create_staff, delete_staff, get_staff, get_staff_by_username, list_staff, update_staff,
 };
@@ -267,6 +271,21 @@ pub fn router(state: AppState) -> Router {
                 .delete(delete_loan_product),
         )
         .route("/v1/loanproducts/name/:name", get(get_loan_product_by_name))
+        // Savings Products
+        .route(
+            "/v1/savingsproducts",
+            get(list_savings_products).post(create_savings_product),
+        )
+        .route(
+            "/v1/savingsproducts/:id",
+            get(get_savings_product)
+                .put(update_savings_product)
+                .delete(delete_savings_product),
+        )
+        .route(
+            "/v1/savingsproducts/name/:name",
+            get(get_savings_product_by_name),
+        )
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))
         .route(

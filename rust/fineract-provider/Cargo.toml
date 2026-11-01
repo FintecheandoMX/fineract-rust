@@ -80,6 +80,9 @@ path = "../fineract-staff"
 [dependencies.fineract-holiday]
 path = "../fineract-holiday"
 
+[dependencies.fineract-code]
+path = "../fineract-code"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

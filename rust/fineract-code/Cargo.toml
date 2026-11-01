@@ -1,0 +1,40 @@
+[package]
+name = "fineract-code"
+version = "0.1.0"
+edition = "2021"
+description = "Code and CodeValue lookup tables domain module."
+license = "Apache-2.0"
+
+[dependencies]
+axum = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+http = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
+secrecy = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+sqlx = { workspace = true, features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "bigdecimal"] }
+
+[dependencies.fineract-core]
+path = "../fineract-core"
+features = ["sqlx"]
+
+[dependencies.fineract-security]
+path = "../fineract-security"
+
+[dependencies.fineract-persistence]
+path = "../fineract-persistence"
+
+[dependencies.fineract-validation]
+path = "../fineract-validation"
+
+[dependencies.fineract-command]
+path = "../fineract-command"
+
+[lints.rust]
+unused_imports = "allow"
+dead_code = "allow"

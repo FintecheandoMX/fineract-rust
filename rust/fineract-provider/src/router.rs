@@ -25,6 +25,10 @@ use crate::handlers::client::{
     activate_client, create_client, create_group, delete_client, delete_group, get_client,
     get_group, list_clients, list_groups, update_client, update_group,
 };
+use crate::handlers::code::{
+    create_code, create_code_value, delete_code, delete_code_value, get_code, get_code_value,
+    list_code_values, list_codes, update_code, update_code_value,
+};
 use crate::handlers::document::{
     create_document, delete_document, get_document, list_documents, update_document,
 };
@@ -217,6 +221,22 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/staff/by-username/:username",
             get(get_staff_by_username),
+        )
+        // Codes / CodeValues
+        .route("/v1/codes", get(list_codes).post(create_code))
+        .route(
+            "/v1/codes/:id",
+            get(get_code).put(update_code).delete(delete_code),
+        )
+        .route(
+            "/v1/codes/:codeId/codeValues",
+            get(list_code_values).post(create_code_value),
+        )
+        .route(
+            "/v1/codes/:codeId/codeValues/:id",
+            get(get_code_value)
+                .put(update_code_value)
+                .delete(delete_code_value),
         )
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))

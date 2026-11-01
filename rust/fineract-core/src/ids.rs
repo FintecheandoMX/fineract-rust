@@ -196,6 +196,9 @@ define_id!(LoanTransactionId);
 define_id!(LoanScheduleId);
 // Holiday / Calendar.
 define_id!(HolidayId);
+// Code / CodeValue (lookup tables).
+define_id!(CodeId);
+define_id!(CodeValueId);
 
 #[cfg(test)]
 mod tests {

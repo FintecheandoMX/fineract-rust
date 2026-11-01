@@ -41,6 +41,7 @@ members = [
     "rust/fineract-client",
     "rust/fineract-staff",
     "rust/fineract-holiday",
+    "rust/fineract-code",
 ]
 
 [workspace.dependencies]

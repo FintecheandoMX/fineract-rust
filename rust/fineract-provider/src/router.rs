@@ -28,6 +28,10 @@ use crate::handlers::client::{
 use crate::handlers::document::{
     create_document, delete_document, get_document, list_documents, update_document,
 };
+use crate::handlers::holiday::{
+    create_holiday, delete_holiday, get_holiday, get_holidays_by_date, list_holidays,
+    update_holiday,
+};
 use crate::handlers::investor::{
     create_investor, delete_investor, get_investor, list_investors, update_investor,
 };
@@ -214,6 +218,13 @@ pub fn router(state: AppState) -> Router {
             "/v1/staff/by-username/:username",
             get(get_staff_by_username),
         )
+        // Holidays
+        .route("/v1/holidays", get(list_holidays).post(create_holiday))
+        .route(
+            "/v1/holidays/:id",
+            get(get_holiday).put(update_holiday).delete(delete_holiday),
+        )
+        .route("/v1/holidays/date/:date", get(get_holidays_by_date))
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(
             state.clone(),

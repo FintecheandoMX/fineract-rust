@@ -40,6 +40,7 @@ members = [
     "rust/fineract-loan-origination",
     "rust/fineract-client",
     "rust/fineract-staff",
+    "rust/fineract-holiday",
 ]
 
 [workspace.dependencies]

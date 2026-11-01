@@ -194,6 +194,8 @@ define_id!(AccountingPeriodId);
 // Loan family.
 define_id!(LoanTransactionId);
 define_id!(LoanScheduleId);
+// Holiday / Calendar.
+define_id!(HolidayId);
 
 #[cfg(test)]
 mod tests {

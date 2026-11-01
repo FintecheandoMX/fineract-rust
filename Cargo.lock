@@ -625,6 +625,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-holiday"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "axum",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "http",
+ "rust_decimal",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-investor"
 version = "0.1.0"
 dependencies = [
@@ -736,6 +759,7 @@ dependencies = [
  "fineract-command",
  "fineract-core",
  "fineract-document",
+ "fineract-holiday",
  "fineract-investor",
  "fineract-loan",
  "fineract-loan-origination",

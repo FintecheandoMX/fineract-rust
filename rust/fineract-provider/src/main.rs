@@ -12,6 +12,7 @@ use std::sync::Arc;
 use axum::serve;
 use fineract_accounting::command::register_handlers as register_accounting_handlers;
 use fineract_command::SynchronousCommandDispatcher;
+use fineract_holiday::command::register_handlers as register_holiday_handlers;
 use fineract_persistence::TenantPoolManager;
 use fineract_security::AuthorizationService;
 use fineract_security::InMemoryAuthorizationService;
@@ -32,13 +33,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // --- Command dispatcher ---
-    let dispatcher = SynchronousCommandDispatcher::new();
+    // --- Tenant pool manager ---
+    let pool_manager: Arc<TenantPoolManager> = Arc::new(TenantPoolManager::new());
 
-    // Register accounting command handlers
-    // Note: In a real app, we'd use a proper service implementation here.
-    // For now, we just need the command types registered.
-    // register_accounting_handlers(&mut dispatcher, accounting_service);
+    let connection_string = std::env::var("FINERACT_DATABASE_URL").unwrap_or_else(|_| {
+        "postgresql://postgres:***@localhost:5432/fineract_desarrollo".to_string()
+    });
 
     // --- Authentication service ---
     let auth_service: Arc<dyn AuthenticationService> = Arc::new(InMemoryAuthService::new()?);
@@ -47,12 +47,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let authz_service: Arc<dyn AuthorizationService> =
         Arc::new(InMemoryAuthorizationService::default());
 
-    // --- Tenant pool manager ---
-    let pool_manager: Arc<TenantPoolManager> = Arc::new(TenantPoolManager::new());
+    // --- Holiday service ---
+    let holiday_service = Arc::new(fineract_holiday::HolidayServiceImpl::new(
+        fineract_holiday::SqlxHolidayRepository::new(
+            pool_manager.clone(),
+            connection_string.clone(),
+        ),
+        authz_service.clone(),
+    ));
 
-    let connection_string = std::env::var("FINERACT_DATABASE_URL").unwrap_or_else(|_| {
-        "postgresql://postgres:postgres@localhost:5432/fineract_desarrollo".to_string()
-    });
+    // --- Command dispatcher ---
+    let mut dispatcher = SynchronousCommandDispatcher::new();
+
+    // Register holiday command handlers
+    register_holiday_handlers(&mut dispatcher, holiday_service);
+
+    // Register accounting command handlers
+    // Note: In a real app, we'd use a proper service implementation here.
+    // For now, we just need the command types registered.
+    // register_accounting_handlers(&mut dispatcher, accounting_service);
 
     let state = AppState::new(
         dispatcher,

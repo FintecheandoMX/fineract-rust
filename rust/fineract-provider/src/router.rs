@@ -49,6 +49,11 @@ use crate::handlers::savings::{
     list_savings_accounts, update_savings_account,
 };
 use crate::handlers::tax::{create_tax, delete_tax, get_tax, list_taxes, update_tax};
+use crate::handlers::working_capital_loan::{
+    create_working_capital_loan, delete_working_capital_loan, get_working_capital_loan,
+    list_working_capital_loans, list_working_capital_loans_by_client, update_working_capital_loan,
+    update_working_capital_loan_status,
+};
 use crate::state::AppState;
 
 /// Build the Axum `Router` with all API routes.
@@ -176,6 +181,25 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/progressive-loans/:id/advance-phase",
             post(advance_phase),
+        )
+        // Working Capital Loans
+        .route(
+            "/v1/working-capital-loans",
+            get(list_working_capital_loans).post(create_working_capital_loan),
+        )
+        .route(
+            "/v1/working-capital-loans/:id",
+            get(get_working_capital_loan)
+                .put(update_working_capital_loan)
+                .delete(delete_working_capital_loan),
+        )
+        .route(
+            "/v1/clients/:client_id/working-capital-loans",
+            get(list_working_capital_loans_by_client),
+        )
+        .route(
+            "/v1/working-capital-loans/:id/status",
+            put(update_working_capital_loan_status),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

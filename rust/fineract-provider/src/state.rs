@@ -22,6 +22,7 @@ use fineract_savings::SqlxSavingsAccountRepository;
 use fineract_security::AuthenticationService;
 use fineract_security::AuthorizationService;
 use fineract_tax::SqlxTaxRepository;
+use fineract_working_capital_loan::SqlxWorkingCapitalLoanRepository;
 
 /// Shared state injected into every Axum handler via `State(AppState)`.
 #[derive(Clone)]
@@ -43,6 +44,7 @@ pub struct AppState {
     pub investor_repository: Arc<SqlxInvestorRepository>,
     pub loan_application_repository: Arc<SqlxLoanApplicationRepository>,
     pub progressive_loan_repository: Arc<SqlxProgressiveLoanRepository>,
+    pub working_capital_loan_repository: Arc<SqlxWorkingCapitalLoanRepository>,
 }
 
 impl AppState {
@@ -65,6 +67,7 @@ impl AppState {
         let cs10 = connection_string.clone();
         let cs11 = connection_string.clone();
         let cs12 = connection_string.clone();
+        let cs13 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -77,6 +80,7 @@ impl AppState {
         let pm10 = pool_manager.clone();
         let pm11 = pool_manager.clone();
         let pm12 = pool_manager.clone();
+        let pm13 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -95,6 +99,9 @@ impl AppState {
             investor_repository: Arc::new(SqlxInvestorRepository::new(pm10, cs10)),
             loan_application_repository: Arc::new(SqlxLoanApplicationRepository::new(pm11, cs11)),
             progressive_loan_repository: Arc::new(SqlxProgressiveLoanRepository::new(pm12, cs12)),
+            working_capital_loan_repository: Arc::new(SqlxWorkingCapitalLoanRepository::new(
+                pm13, cs13,
+            )),
         }
     }
 }

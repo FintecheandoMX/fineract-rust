@@ -13,3 +13,4 @@ pub mod progressive_loan;
 pub mod rate;
 pub mod savings;
 pub mod tax;
+pub mod working_capital_loan;

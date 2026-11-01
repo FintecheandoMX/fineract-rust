@@ -18,6 +18,7 @@ use fineract_holiday::SqlxHolidayRepository;
 use fineract_investor::SqlxInvestorRepository;
 use fineract_loan::SqlxLoanRepository;
 use fineract_loan_origination::SqlxLoanApplicationRepository;
+use fineract_loan_product::SqlxLoanProductRepository;
 use fineract_persistence::TenantPoolManager;
 use fineract_progressive_loan::SqlxProgressiveLoanRepository;
 use fineract_rates::SqlxRateRepository;
@@ -53,6 +54,7 @@ pub struct AppState {
     pub holiday_repository: Arc<SqlxHolidayRepository>,
     pub code_repository: Arc<SqlxCodeRepository>,
     pub currency_repository: Arc<SqlxCurrencyRepository>,
+    pub loan_product_repository: Arc<SqlxLoanProductRepository>,
 }
 
 impl AppState {
@@ -80,6 +82,7 @@ impl AppState {
         let cs15 = connection_string.clone();
         let cs16 = connection_string.clone();
         let cs17 = connection_string.clone();
+        let cs18 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -97,6 +100,7 @@ impl AppState {
         let pm15 = pool_manager.clone();
         let pm16 = pool_manager.clone();
         let pm17 = pool_manager.clone();
+        let pm18 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -122,6 +126,7 @@ impl AppState {
             holiday_repository: Arc::new(SqlxHolidayRepository::new(pm15, cs15)),
             code_repository: Arc::new(SqlxCodeRepository::new(pm16, cs16)),
             currency_repository: Arc::new(SqlxCurrencyRepository::new(pm17, cs17)),
+            loan_product_repository: Arc::new(SqlxLoanProductRepository::new(pm18, cs18)),
         }
     }
 }

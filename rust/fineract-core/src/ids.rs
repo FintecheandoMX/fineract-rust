@@ -201,6 +201,8 @@ define_id!(CodeId);
 define_id!(CodeValueId);
 // Currency.
 define_id!(CurrencyId);
+// Loan product.
+define_id!(LoanProductId);
 
 #[cfg(test)]
 mod tests {

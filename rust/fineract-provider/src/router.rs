@@ -51,6 +51,10 @@ use crate::handlers::loan_origination::{
     list_loan_applications, list_loan_applications_by_client, reject_loan_application,
     submit_loan_application, update_loan_application,
 };
+use crate::handlers::loan_product::{
+    create_loan_product, delete_loan_product, get_loan_product, get_loan_product_by_name,
+    list_loan_products, update_loan_product,
+};
 use crate::handlers::progressive_loan::{
     advance_phase, create_progressive_loan, delete_progressive_loan, get_progressive_loan,
     list_progressive_loans, list_progressive_loans_by_client, update_progressive_loan,
@@ -251,6 +255,18 @@ pub fn router(state: AppState) -> Router {
                 .delete(delete_currency),
         )
         .route("/v1/currencies/code/:code", get(get_currency_by_code))
+        // Loan Products
+        .route(
+            "/v1/loanproducts",
+            get(list_loan_products).post(create_loan_product),
+        )
+        .route(
+            "/v1/loanproducts/:id",
+            get(get_loan_product)
+                .put(update_loan_product)
+                .delete(delete_loan_product),
+        )
+        .route("/v1/loanproducts/name/:name", get(get_loan_product_by_name))
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))
         .route(

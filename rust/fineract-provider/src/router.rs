@@ -39,6 +39,10 @@ use crate::handlers::loan_origination::{
     list_loan_applications, list_loan_applications_by_client, reject_loan_application,
     submit_loan_application, update_loan_application,
 };
+use crate::handlers::progressive_loan::{
+    advance_phase, create_progressive_loan, delete_progressive_loan, get_progressive_loan,
+    list_progressive_loans, list_progressive_loans_by_client, update_progressive_loan,
+};
 use crate::handlers::rate::{create_rate, delete_rate, get_rate, list_rates, update_rate};
 use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
@@ -153,6 +157,25 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/loan-applications/:id/reject",
             post(reject_loan_application),
+        )
+        // Progressive Loans
+        .route(
+            "/v1/progressive-loans",
+            get(list_progressive_loans).post(create_progressive_loan),
+        )
+        .route(
+            "/v1/progressive-loans/:id",
+            get(get_progressive_loan)
+                .put(update_progressive_loan)
+                .delete(delete_progressive_loan),
+        )
+        .route(
+            "/v1/clients/:client_id/progressive-loans",
+            get(list_progressive_loans_by_client),
+        )
+        .route(
+            "/v1/progressive-loans/:id/advance-phase",
+            post(advance_phase),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

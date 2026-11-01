@@ -9,6 +9,7 @@ pub mod document;
 pub mod investor;
 pub mod loan;
 pub mod loan_origination;
+pub mod progressive_loan;
 pub mod rate;
 pub mod savings;
 pub mod tax;

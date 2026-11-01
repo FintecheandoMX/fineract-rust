@@ -27,6 +27,7 @@ services:
     volumes:
       - fineract_rust_postgres_data:/var/lib/postgresql
       - ./docker/init/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./docker/init/02-missing-tables.sql:/docker-entrypoint-initdb.d/02-missing-tables.sql:ro
     ports:
       - "${FINERACT_DB_PORT:-5432}:5432"
     healthcheck:

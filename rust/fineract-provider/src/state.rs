@@ -21,6 +21,7 @@ use fineract_rates::SqlxRateRepository;
 use fineract_savings::SqlxSavingsAccountRepository;
 use fineract_security::AuthenticationService;
 use fineract_security::AuthorizationService;
+use fineract_staff::SqlxStaffRepository;
 use fineract_tax::SqlxTaxRepository;
 use fineract_working_capital_loan::SqlxWorkingCapitalLoanRepository;
 
@@ -45,6 +46,7 @@ pub struct AppState {
     pub loan_application_repository: Arc<SqlxLoanApplicationRepository>,
     pub progressive_loan_repository: Arc<SqlxProgressiveLoanRepository>,
     pub working_capital_loan_repository: Arc<SqlxWorkingCapitalLoanRepository>,
+    pub staff_repository: Arc<SqlxStaffRepository>,
 }
 
 impl AppState {
@@ -68,6 +70,7 @@ impl AppState {
         let cs11 = connection_string.clone();
         let cs12 = connection_string.clone();
         let cs13 = connection_string.clone();
+        let cs14 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -81,6 +84,7 @@ impl AppState {
         let pm11 = pool_manager.clone();
         let pm12 = pool_manager.clone();
         let pm13 = pool_manager.clone();
+        let pm14 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -102,6 +106,7 @@ impl AppState {
             working_capital_loan_repository: Arc::new(SqlxWorkingCapitalLoanRepository::new(
                 pm13, cs13,
             )),
+            staff_repository: Arc::new(SqlxStaffRepository::new(pm14, cs14)),
         }
     }
 }

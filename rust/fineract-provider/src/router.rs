@@ -48,6 +48,9 @@ use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
     list_savings_accounts, update_savings_account,
 };
+use crate::handlers::staff::{
+    create_staff, delete_staff, get_staff, get_staff_by_username, list_staff, update_staff,
+};
 use crate::handlers::tax::{create_tax, delete_tax, get_tax, list_taxes, update_tax};
 use crate::handlers::working_capital_loan::{
     create_working_capital_loan, delete_working_capital_loan, get_working_capital_loan,
@@ -200,6 +203,16 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/working-capital-loans/:id/status",
             put(update_working_capital_loan_status),
+        )
+        // Staff
+        .route("/v1/staff", get(list_staff).post(create_staff))
+        .route(
+            "/v1/staff/:id",
+            get(get_staff).put(update_staff).delete(delete_staff),
+        )
+        .route(
+            "/v1/staff/by-username/:username",
+            get(get_staff_by_username),
         )
         // Protect all API routes with auth middleware
         .layer(middleware::from_fn_with_state(

@@ -74,6 +74,9 @@ path = "../fineract-loan-origination"
 [dependencies.fineract-cob]
 path = "../fineract-cob"
 
+[dependencies.fineract-staff]
+path = "../fineract-staff"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

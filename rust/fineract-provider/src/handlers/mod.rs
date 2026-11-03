@@ -8,6 +8,7 @@ pub mod client;
 pub mod code;
 pub mod collateral;
 pub mod currency;
+pub mod datatable;
 pub mod document;
 pub mod guarantor;
 pub mod holiday;

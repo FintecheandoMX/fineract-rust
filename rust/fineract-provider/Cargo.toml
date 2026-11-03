@@ -104,6 +104,9 @@ path = "../fineract-guarantor"
 [dependencies.fineract-report]
 path = "../fineract-report"
 
+[dependencies.fineract-datatable]
+path = "../fineract-datatable"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

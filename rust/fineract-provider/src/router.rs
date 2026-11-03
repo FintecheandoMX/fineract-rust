@@ -36,6 +36,11 @@ use crate::handlers::currency::{
     create_currency, delete_currency, get_currency, get_currency_by_code, list_currencies,
     update_currency,
 };
+use crate::handlers::datatable::{
+    create_column, create_datatable, create_view, delete_column, delete_datatable, delete_view,
+    get_column, get_datatable, get_view, list_columns, list_datatables, list_views, update_column,
+    update_datatable, update_view,
+};
 use crate::handlers::document::{
     create_document, delete_document, get_document, list_documents, update_document,
 };
@@ -323,6 +328,33 @@ pub fn router(state: AppState) -> Router {
             get(get_guarantor)
                 .put(update_guarantor)
                 .delete(delete_guarantor),
+        )
+        // Datatables
+        .route(
+            "/v1/datatables",
+            get(list_datatables).post(create_datatable),
+        )
+        .route(
+            "/v1/datatables/:id",
+            get(get_datatable)
+                .put(update_datatable)
+                .delete(delete_datatable),
+        )
+        .route(
+            "/v1/datatables/:datatable_id/columns",
+            get(list_columns).post(create_column),
+        )
+        .route(
+            "/v1/datatables/:datatable_id/columns/:id",
+            get(get_column).put(update_column).delete(delete_column),
+        )
+        .route(
+            "/v1/datatables/:datatable_id/views",
+            get(list_views).post(create_view),
+        )
+        .route(
+            "/v1/datatables/:datatable_id/views/:id",
+            get(get_view).put(update_view).delete(delete_view),
         )
         // Reports
         .route("/v1/reports", get(list_reports).post(create_report))

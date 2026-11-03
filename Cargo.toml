@@ -49,6 +49,7 @@ members = [
     "rust/fineract-collateral",
     "rust/fineract-guarantor",
     "rust/fineract-report",
+    "rust/fineract-datatable",
 ]
 
 [workspace.dependencies]

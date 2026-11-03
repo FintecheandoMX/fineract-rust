@@ -15,6 +15,7 @@ use fineract_code::command::register_handlers as register_code_handlers;
 use fineract_collateral::command::register_handlers as register_collateral_handlers;
 use fineract_command::SynchronousCommandDispatcher;
 use fineract_currency::command::register_handlers as register_currency_handlers;
+use fineract_datatable::command::register_handlers as register_datatable_handlers;
 use fineract_guarantor::command::register_handlers as register_guarantor_handlers;
 use fineract_holiday::command::register_handlers as register_holiday_handlers;
 use fineract_loan_product::command::register_handlers as register_loan_product_handlers;
@@ -128,6 +129,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         authz_service.clone(),
     ));
 
+    // --- Datatable service ---
+    let datatable_service = Arc::new(fineract_datatable::DatatableServiceImpl::new(
+        fineract_datatable::SqlxDatatableRepository::new(
+            pool_manager.clone(),
+            connection_string.clone(),
+        ),
+        authz_service.clone(),
+    ));
+
     // --- Command dispatcher ---
     let mut dispatcher = SynchronousCommandDispatcher::new();
 
@@ -157,6 +167,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Register report command handlers
     register_report_handlers(&mut dispatcher, report_service);
+
+    // Register datatable command handlers
+    register_datatable_handlers(&mut dispatcher, datatable_service);
 
     // Register accounting command handlers
     // Note: In a real app, we'd use a proper service implementation here.

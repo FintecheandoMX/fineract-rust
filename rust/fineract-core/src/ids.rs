@@ -207,6 +207,8 @@ define_id!(LoanProductId);
 define_id!(SavingsProductId);
 // Guarantor.
 define_id!(GuarantorId);
+// Datatable.
+define_id!(DatatableId);
 
 #[cfg(test)]
 mod tests {

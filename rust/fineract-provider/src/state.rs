@@ -25,6 +25,7 @@ use fineract_note::SqlxNoteRepository;
 use fineract_persistence::TenantPoolManager;
 use fineract_progressive_loan::SqlxProgressiveLoanRepository;
 use fineract_rates::SqlxRateRepository;
+use fineract_report::SqlxReportRepository;
 use fineract_savings::SqlxSavingsAccountRepository;
 use fineract_savings_product::SqlxSavingsProductRepository;
 use fineract_security::AuthenticationService;
@@ -63,6 +64,7 @@ pub struct AppState {
     pub note_repository: Arc<SqlxNoteRepository>,
     pub collateral_repository: Arc<SqlxCollateralRepository>,
     pub guarantor_repository: Arc<SqlxGuarantorRepository>,
+    pub report_repository: Arc<SqlxReportRepository>,
 }
 
 impl AppState {
@@ -95,6 +97,7 @@ impl AppState {
         let cs20 = connection_string.clone();
         let cs21 = connection_string.clone();
         let cs22 = connection_string.clone();
+        let cs23 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -117,6 +120,7 @@ impl AppState {
         let pm20 = pool_manager.clone();
         let pm21 = pool_manager.clone();
         let pm22 = pool_manager.clone();
+        let pm23 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -147,6 +151,7 @@ impl AppState {
             note_repository: Arc::new(SqlxNoteRepository::new(pm20, cs20)),
             collateral_repository: Arc::new(SqlxCollateralRepository::new(pm21, cs21)),
             guarantor_repository: Arc::new(SqlxGuarantorRepository::new(pm22, cs22)),
+            report_repository: Arc::new(SqlxReportRepository::new(pm23, cs23)),
         }
     }
 }

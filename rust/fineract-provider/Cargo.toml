@@ -101,6 +101,9 @@ path = "../fineract-collateral"
 [dependencies.fineract-guarantor]
 path = "../fineract-guarantor"
 
+[dependencies.fineract-report]
+path = "../fineract-report"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

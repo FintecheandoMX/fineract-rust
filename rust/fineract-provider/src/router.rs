@@ -67,6 +67,9 @@ use crate::handlers::progressive_loan::{
     list_progressive_loans, list_progressive_loans_by_client, update_progressive_loan,
 };
 use crate::handlers::rate::{create_rate, delete_rate, get_rate, list_rates, update_rate};
+use crate::handlers::report::{
+    create_report, delete_report, generate_report, get_report, list_reports, update_report,
+};
 use crate::handlers::savings::{
     activate_savings_account, create_savings_account, delete_savings_account, get_savings_account,
     list_savings_accounts, update_savings_account,
@@ -321,6 +324,13 @@ pub fn router(state: AppState) -> Router {
                 .put(update_guarantor)
                 .delete(delete_guarantor),
         )
+        // Reports
+        .route("/v1/reports", get(list_reports).post(create_report))
+        .route(
+            "/v1/reports/:id",
+            get(get_report).put(update_report).delete(delete_report),
+        )
+        .route("/v1/reports/:id/generate", post(generate_report))
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))
         .route(

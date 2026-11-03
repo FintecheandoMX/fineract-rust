@@ -18,6 +18,7 @@ pub mod loan_product;
 pub mod note;
 pub mod progressive_loan;
 pub mod rate;
+pub mod report;
 pub mod savings;
 pub mod savings_product;
 pub mod staff;

@@ -5,6 +5,7 @@ pub mod auth;
 pub mod branch;
 pub mod charge;
 pub mod client;
+pub mod cob;
 pub mod code;
 pub mod collateral;
 pub mod currency;

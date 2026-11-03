@@ -7,7 +7,7 @@
 #![forbid(unsafe_code)]
 #![allow(async_fn_in_trait)]
 
-mod command;
+pub mod command;
 mod domain;
 mod engine;
 mod repository;

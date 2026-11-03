@@ -11,6 +11,7 @@ use std::sync::Arc;
 
 use axum::serve;
 use fineract_accounting::command::register_handlers as register_accounting_handlers;
+use fineract_cob::command::register_handlers as register_cob_handlers;
 use fineract_code::command::register_handlers as register_code_handlers;
 use fineract_collateral::command::register_handlers as register_collateral_handlers;
 use fineract_command::SynchronousCommandDispatcher;
@@ -138,6 +139,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         authz_service.clone(),
     ));
 
+    // --- COB / Job service ---
+    let job_service = Arc::new(fineract_cob::JobServiceImpl::new(
+        fineract_cob::SqlxJobRepository::new(pool_manager.clone(), connection_string.clone()),
+        authz_service.clone(),
+    ));
+
     // --- Command dispatcher ---
     let mut dispatcher = SynchronousCommandDispatcher::new();
 
@@ -170,6 +177,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Register datatable command handlers
     register_datatable_handlers(&mut dispatcher, datatable_service);
+
+    // Register cob command handlers
+    register_cob_handlers(&mut dispatcher, job_service);
 
     // Register accounting command handlers
     // Note: In a real app, we'd use a proper service implementation here.

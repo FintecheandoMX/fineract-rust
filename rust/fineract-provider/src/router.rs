@@ -25,6 +25,7 @@ use crate::handlers::client::{
     activate_client, create_client, create_group, delete_client, delete_group, get_client,
     get_group, list_clients, list_groups, update_client, update_group,
 };
+use crate::handlers::cob::{create_job, disable_job, enable_job, get_job, list_jobs, update_job};
 use crate::handlers::code::{
     create_code, create_code_value, delete_code, delete_code_value, get_code, get_code_value,
     list_code_values, list_codes, update_code, update_code_value,
@@ -329,6 +330,11 @@ pub fn router(state: AppState) -> Router {
                 .put(update_guarantor)
                 .delete(delete_guarantor),
         )
+        // COB / Jobs
+        .route("/v1/jobs", get(list_jobs).post(create_job))
+        .route("/v1/jobs/:id", get(get_job).put(update_job))
+        .route("/v1/jobs/:id/enable", post(enable_job))
+        .route("/v1/jobs/:id/disable", post(disable_job))
         // Datatables
         .route(
             "/v1/datatables",

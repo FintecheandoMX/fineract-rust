@@ -15,6 +15,7 @@ use fineract_collateral::SqlxCollateralRepository;
 use fineract_command::SynchronousCommandDispatcher;
 use fineract_currency::SqlxCurrencyRepository;
 use fineract_document::SqlxDocumentRepository;
+use fineract_guarantor::SqlxGuarantorRepository;
 use fineract_holiday::SqlxHolidayRepository;
 use fineract_investor::SqlxInvestorRepository;
 use fineract_loan::SqlxLoanRepository;
@@ -61,6 +62,7 @@ pub struct AppState {
     pub savings_product_repository: Arc<SqlxSavingsProductRepository>,
     pub note_repository: Arc<SqlxNoteRepository>,
     pub collateral_repository: Arc<SqlxCollateralRepository>,
+    pub guarantor_repository: Arc<SqlxGuarantorRepository>,
 }
 
 impl AppState {
@@ -92,6 +94,7 @@ impl AppState {
         let cs19 = connection_string.clone();
         let cs20 = connection_string.clone();
         let cs21 = connection_string.clone();
+        let cs22 = connection_string.clone();
         let pm1 = pool_manager.clone();
         let pm2 = pool_manager.clone();
         let pm3 = pool_manager.clone();
@@ -113,6 +116,7 @@ impl AppState {
         let pm19 = pool_manager.clone();
         let pm20 = pool_manager.clone();
         let pm21 = pool_manager.clone();
+        let pm22 = pool_manager.clone();
         Self {
             dispatcher: Arc::new(dispatcher),
             auth_service,
@@ -142,6 +146,7 @@ impl AppState {
             savings_product_repository: Arc::new(SqlxSavingsProductRepository::new(pm19, cs19)),
             note_repository: Arc::new(SqlxNoteRepository::new(pm20, cs20)),
             collateral_repository: Arc::new(SqlxCollateralRepository::new(pm21, cs21)),
+            guarantor_repository: Arc::new(SqlxGuarantorRepository::new(pm22, cs22)),
         }
     }
 }

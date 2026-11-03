@@ -39,6 +39,9 @@ use crate::handlers::currency::{
 use crate::handlers::document::{
     create_document, delete_document, get_document, list_documents, update_document,
 };
+use crate::handlers::guarantor::{
+    create_guarantor, delete_guarantor, get_guarantor, list_guarantors, update_guarantor,
+};
 use crate::handlers::holiday::{
     create_holiday, delete_holiday, get_holiday, get_holidays_by_date, list_holidays,
     update_holiday,
@@ -306,6 +309,17 @@ pub fn router(state: AppState) -> Router {
             get(get_collateral)
                 .put(update_collateral)
                 .delete(delete_collateral),
+        )
+        // Guarantors
+        .route(
+            "/v1/guarantors",
+            get(list_guarantors).post(create_guarantor),
+        )
+        .route(
+            "/v1/guarantors/:id",
+            get(get_guarantor)
+                .put(update_guarantor)
+                .delete(delete_guarantor),
         )
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))

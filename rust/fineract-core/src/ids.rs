@@ -205,6 +205,8 @@ define_id!(CurrencyId);
 define_id!(LoanProductId);
 // Savings product.
 define_id!(SavingsProductId);
+// Guarantor.
+define_id!(GuarantorId);
 
 #[cfg(test)]
 mod tests {

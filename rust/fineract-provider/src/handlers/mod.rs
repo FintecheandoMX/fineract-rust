@@ -9,6 +9,7 @@ pub mod code;
 pub mod collateral;
 pub mod currency;
 pub mod document;
+pub mod guarantor;
 pub mod holiday;
 pub mod investor;
 pub mod loan;

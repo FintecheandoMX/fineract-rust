@@ -6,6 +6,7 @@ pub mod branch;
 pub mod charge;
 pub mod client;
 pub mod code;
+pub mod collateral;
 pub mod currency;
 pub mod document;
 pub mod holiday;

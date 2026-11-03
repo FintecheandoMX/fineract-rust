@@ -95,6 +95,9 @@ path = "../fineract-savings-product"
 [dependencies.fineract-note]
 path = "../fineract-note"
 
+[dependencies.fineract-collateral]
+path = "../fineract-collateral"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"

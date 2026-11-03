@@ -12,6 +12,7 @@ use std::sync::Arc;
 use axum::serve;
 use fineract_accounting::command::register_handlers as register_accounting_handlers;
 use fineract_code::command::register_handlers as register_code_handlers;
+use fineract_collateral::command::register_handlers as register_collateral_handlers;
 use fineract_command::SynchronousCommandDispatcher;
 use fineract_currency::command::register_handlers as register_currency_handlers;
 use fineract_holiday::command::register_handlers as register_holiday_handlers;
@@ -101,6 +102,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         authz_service.clone(),
     ));
 
+    // --- Collateral service ---
+    let collateral_service = Arc::new(fineract_collateral::CollateralServiceImpl::new(
+        fineract_collateral::SqlxCollateralRepository::new(
+            pool_manager.clone(),
+            connection_string.clone(),
+        ),
+        authz_service.clone(),
+    ));
+
     // --- Command dispatcher ---
     let mut dispatcher = SynchronousCommandDispatcher::new();
 
@@ -121,6 +131,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Register note command handlers
     register_note_handlers(&mut dispatcher, note_service);
+
+    // Register collateral command handlers
+    register_collateral_handlers(&mut dispatcher, collateral_service);
 
     // Register accounting command handlers
     // Note: In a real app, we'd use a proper service implementation here.

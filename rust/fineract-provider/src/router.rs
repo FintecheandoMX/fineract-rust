@@ -29,6 +29,9 @@ use crate::handlers::code::{
     create_code, create_code_value, delete_code, delete_code_value, get_code, get_code_value,
     list_code_values, list_codes, update_code, update_code_value,
 };
+use crate::handlers::collateral::{
+    create_collateral, delete_collateral, get_collateral, list_collateral, update_collateral,
+};
 use crate::handlers::currency::{
     create_currency, delete_currency, get_currency, get_currency_by_code, list_currencies,
     update_currency,
@@ -292,6 +295,17 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/notes/:id",
             get(get_note).put(update_note).delete(delete_note),
+        )
+        // Collateral
+        .route(
+            "/v1/collateral",
+            get(list_collateral).post(create_collateral),
+        )
+        .route(
+            "/v1/collateral/:id",
+            get(get_collateral)
+                .put(update_collateral)
+                .delete(delete_collateral),
         )
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))

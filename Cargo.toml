@@ -46,6 +46,7 @@ members = [
     "rust/fineract-loan-product",
     "rust/fineract-savings-product",
     "rust/fineract-note",
+    "rust/fineract-collateral",
 ]
 
 [workspace.dependencies]

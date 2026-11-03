@@ -16,6 +16,7 @@ use fineract_command::SynchronousCommandDispatcher;
 use fineract_currency::command::register_handlers as register_currency_handlers;
 use fineract_holiday::command::register_handlers as register_holiday_handlers;
 use fineract_loan_product::command::register_handlers as register_loan_product_handlers;
+use fineract_note::command::register_handlers as register_note_handlers;
 use fineract_persistence::TenantPoolManager;
 use fineract_savings_product::command::register_handlers as register_savings_product_handlers;
 use fineract_security::AuthorizationService;
@@ -94,6 +95,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             authz_service.clone(),
         ));
 
+    // --- Note service ---
+    let note_service = Arc::new(fineract_note::NoteServiceImpl::new(
+        fineract_note::SqlxNoteRepository::new(pool_manager.clone(), connection_string.clone()),
+        authz_service.clone(),
+    ));
+
     // --- Command dispatcher ---
     let mut dispatcher = SynchronousCommandDispatcher::new();
 
@@ -111,6 +118,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Register savings product command handlers
     register_savings_product_handlers(&mut dispatcher, savings_product_service);
+
+    // Register note command handlers
+    register_note_handlers(&mut dispatcher, note_service);
 
     // Register accounting command handlers
     // Note: In a real app, we'd use a proper service implementation here.

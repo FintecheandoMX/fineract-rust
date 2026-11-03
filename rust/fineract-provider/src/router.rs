@@ -55,6 +55,7 @@ use crate::handlers::loan_product::{
     create_loan_product, delete_loan_product, get_loan_product, get_loan_product_by_name,
     list_loan_products, update_loan_product,
 };
+use crate::handlers::note::{create_note, delete_note, get_note, list_notes, update_note};
 use crate::handlers::progressive_loan::{
     advance_phase, create_progressive_loan, delete_progressive_loan, get_progressive_loan,
     list_progressive_loans, list_progressive_loans_by_client, update_progressive_loan,
@@ -285,6 +286,12 @@ pub fn router(state: AppState) -> Router {
         .route(
             "/v1/savingsproducts/name/:name",
             get(get_savings_product_by_name),
+        )
+        // Notes
+        .route("/v1/notes", get(list_notes).post(create_note))
+        .route(
+            "/v1/notes/:id",
+            get(get_note).put(update_note).delete(delete_note),
         )
         // Holidays
         .route("/v1/holidays", get(list_holidays).post(create_holiday))

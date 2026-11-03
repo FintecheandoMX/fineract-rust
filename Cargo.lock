@@ -776,6 +776,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "fineract-note"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "axum",
+ "chrono",
+ "fineract-command",
+ "fineract-core",
+ "fineract-persistence",
+ "fineract-security",
+ "fineract-validation",
+ "http",
+ "rust_decimal",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "thiserror 1.0.69",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "fineract-persistence"
 version = "0.2.0"
 dependencies = [
@@ -835,6 +858,7 @@ dependencies = [
  "fineract-loan",
  "fineract-loan-origination",
  "fineract-loan-product",
+ "fineract-note",
  "fineract-persistence",
  "fineract-progressive-loan",
  "fineract-rates",

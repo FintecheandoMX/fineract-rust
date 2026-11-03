@@ -92,6 +92,9 @@ path = "../fineract-loan-product"
 [dependencies.fineract-savings-product]
 path = "../fineract-savings-product"
 
+[dependencies.fineract-note]
+path = "../fineract-note"
+
 [lints.rust]
 unused_imports = "allow"
 dead_code = "allow"
